@@ -218,6 +218,17 @@
     ctx.fillText('100 mi radius', center[0] + rx * 0.72, center[1] - ry * 0.72);
   }
 
+
+  // ── Email links (prevent Netlify obfuscation) ──
+  document.querySelectorAll('.email-link').forEach(function(el) {
+    el.href = 'mailto:' + 'service' + '@' + 'directpumping.com';
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.email-link').forEach(function(el) {
+      el.href = 'mailto:' + 'service' + '@' + 'directpumping.com';
+    });
+  });
+
   // ── Event Delegation - handles ALL buttons ──
   document.addEventListener('click', function(e) {
     var el = e.target.closest('[data-modal],[data-action],[data-type]');
