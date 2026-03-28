@@ -1424,6 +1424,20 @@
 </div>
 
 <script>
+
+function submitQuoteForm() {
+  var modal = document.getElementById('quoteModal');
+  var inner = modal.querySelector('div[style*="max-width:480px"]');
+  if (inner) {
+    inner.innerHTML = '<div style="text-align:center;padding:20px 0;">' +
+      '<div style="font-size:3rem;margin-bottom:16px;">✅</div>' +
+      '<h3 style="font-family:Barlow Condensed,sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:#ffffff;margin-bottom:12px;">Request Received!</h3>' +
+      '<p style="color:#aaa;font-size:0.95rem;line-height:1.7;margin-bottom:24px;">Thanks for reaching out. We'll be in touch within the hour.<br>For immediate help call <a href="tel:+18176680442" style="color:#F5A800;">(817) 668-0442</a></p>' +
+      '<button onclick="closeQuoteModal()" style="background:#F5A800;color:#1e1e1e;font-family:Barlow Condensed,sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;padding:14px 36px;border:none;border-radius:3px;cursor:pointer;">Close</button>' +
+      '</div>';
+  }
+}
+
 function openQuoteModal(type) {
   var m = document.getElementById('quoteModal');
   m.style.display = 'flex';
