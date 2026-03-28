@@ -143,7 +143,7 @@ function dpInit() {
       var afterModal = el.getAttribute('data-modal-after');
       if (afterModal) { setTimeout(function(){ openQuoteModal(afterModal); }, 200); }
     }
-    if (action === 'submit-quote') { e.preventDefault(); submitQuoteForm(); }
+    // submit-quote now handled by native form submission
     if (action === 'open-map')     { e.preventDefault(); openServiceAreaMap(); }
   });
 

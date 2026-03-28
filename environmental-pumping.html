@@ -1337,7 +1337,11 @@
   <div data-action="close-quote" style="position:absolute;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(3px);"></div>
   <div style="position:relative;background:#3a3a3a;border-top:4px solid #F5A800;border-radius:4px;width:100%;max-width:480px;padding:40px 36px;box-shadow:0 24px 80px rgba(0,0,0,0.5);">
     <button data-action="close-quote" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#888;font-size:1.8rem;cursor:pointer;line-height:1;" aria-label="Close quote form">&times;</button>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:#F5A800;margin-bottom:10px;" id="modalBadge">REQUEST A QUOTE</div>
+    <form name="quote-request" data-netlify="true" netlify-honeypot="bot-field" method="POST" id="quoteForm">
+<input type="hidden" name="form-name" value="quote-request">
+<input type="hidden" name="bot-field" style="display:none">
+<input type="hidden" name="service-type" id="formServiceType" value="Residential">
+<div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:#F5A800;margin-bottom:10px;" id="modalBadge">REQUEST A QUOTE</div>
     <h3 id="modalTitle" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:#ffffff;line-height:1;margin-bottom:6px;">Service Quote</h3>
     <p style="color:#888;font-size:0.85rem;margin-bottom:24px;">We'll get back to you fast — usually within the hour.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:20px;">
@@ -1346,15 +1350,15 @@
     </div>
     <div style="margin-bottom:14px;">
       <label style="display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:5px;">Your Name *</label>
-      <input type="text" placeholder="John Smith" aria-required="true" aria-label="Your full name" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;">
+      <input type="text" placeholder="John Smith" aria-required="true" aria-label="Your full name" name="full-name" required style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;">
     </div>
     <div style="margin-bottom:14px;">
       <label style="display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:5px;">Phone Number *</label>
-      <input type="tel" placeholder="(817) 668-0442" aria-required="true" aria-label="Your phone number" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;">
+      <input type="tel" placeholder="(817) 668-0442" aria-required="true" aria-label="Your phone number" name="phone" required style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;">
     </div>
     <div style="margin-bottom:14px;">
       <label style="display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:5px;">Service Needed</label>
-      <select style="width:100%;background:#2a2a2a;border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;">
+      <select name="service" style="width:100%;background:#2a2a2a;border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;">
         <option value="">Select a service...</option>
         <option>Septic Tank Pumping</option>
         <option>Septic Inspection</option>
@@ -1368,9 +1372,10 @@
     </div>
     <div style="margin-bottom:22px;">
       <label style="display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:5px;">Notes <span style="font-weight:400;text-transform:none;">(optional)</span></label>
-      <textarea placeholder="Address, description of issue, or anything helpful..." rows="3" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;resize:vertical;"></textarea>
+      <textarea placeholder="Address, description of issue, or anything helpful..." rows="3" name="notes" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:11px 14px;color:#fff;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;resize:vertical;"></textarea>
     </div>
-    <button style="width:100%;background:#F5A800;color:#1e1e1e;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.12em;text-transform:uppercase;padding:14px;border:none;border-radius:3px;cursor:pointer;" data-action="submit-quote">Request Service →</button>
+    <button type="submit" style="width:100%;background:#F5A800;color:#1e1e1e;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.12em;text-transform:uppercase;padding:14px;border:none;border-radius:3px;cursor:pointer;">Request Service →</button>
+</form>
     <p style="text-align:center;color:#555;font-size:0.78rem;margin-top:14px;">Or call us directly: <a href="tel:+18176680442" style="color:#F5A800;text-decoration:none;">(817) 668-0442</a></p>
   </div>
 </div>
