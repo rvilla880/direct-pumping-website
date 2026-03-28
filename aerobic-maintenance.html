@@ -1203,7 +1203,7 @@
     <h1>Aerobic System<br><span>Maintenance &amp; Repairs</span></h1>
     <p>Aerobic Treatment Units require regular, specialized maintenance to stay compliant and operational. Direct Pumping keeps your aerobic system running clean — for residential homes, commercial properties, and government facilities across North Texas.</p>
     <div class="page-hero-ctas">
-      <button onclick="openQuoteModal('residential')" class="btn-primary" style="border:none;cursor:pointer;">Schedule Maintenance</button>
+      <button data-modal="residential" class="btn-primary" style="border:none;cursor:pointer;">Schedule Maintenance</button>
       <a href="tel:+18176680442" class="btn-outline">📞 Call Now</a>
     </div>
   </div>
@@ -1343,7 +1343,7 @@
   <div class="container">
     <h3>Get Your Aerobic System Under a Maintenance Contract</h3>
     <p>Stay compliant. Stay protected. Serving North Texas residential, commercial, and municipal customers.</p>
-    <button onclick="openQuoteModal('residential')" class="btn-dark-inline" style="border:none;cursor:pointer;">Set Up a Contract</button>
+    <button data-modal="residential" class="btn-dark-inline" style="border:none;cursor:pointer;">Set Up a Contract</button>
     <a href="tel:+18176680442" class="btn-outline-dark">📞 Call Direct</a>
   </div>
 </div>
@@ -1387,15 +1387,15 @@
 <input type="checkbox" id="quoteModalToggle" style="display:none;">
 
 <div id="quoteModal" role="dialog" aria-modal="true" aria-label="Request a service quote" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;padding:20px;">
-  <div onclick="closeQuoteModal()" style="position:absolute;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(3px);"></div>
+  <div data-action="close-quote" style="position:absolute;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(3px);"></div>
   <div style="position:relative;background:#3a3a3a;border-top:4px solid #F5A800;border-radius:4px;width:100%;max-width:480px;padding:40px 36px;box-shadow:0 24px 80px rgba(0,0,0,0.5);">
-    <button onclick="closeQuoteModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#888;font-size:1.8rem;cursor:pointer;line-height:1;" aria-label="Close quote form">&times;</button>
+    <button data-action="close-quote" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#888;font-size:1.8rem;cursor:pointer;line-height:1;" aria-label="Close quote form">&times;</button>
     <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:#F5A800;margin-bottom:10px;" id="modalBadge">REQUEST A QUOTE</div>
     <h3 id="modalTitle" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:#ffffff;line-height:1;margin-bottom:6px;">Service Quote</h3>
     <p style="color:#888;font-size:0.85rem;margin-bottom:24px;">We'll get back to you fast — usually within the hour.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:20px;">
-      <button id="btnResidential" onclick="setType('residential')" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;padding:10px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;background:#F5A800;color:#1e1e1e;">🏠 Residential</button>
-      <button id="btnCommercial" onclick="setType('commercial')" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;padding:10px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;background:rgba(255,255,255,0.05);color:#aaa;">🏢 Commercial</button>
+      <button id="btnResidential" data-type="residential" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;padding:10px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;background:#F5A800;color:#1e1e1e;">🏠 Residential</button>
+      <button id="btnCommercial" data-type="commercial" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;padding:10px;border:1px solid rgba(255,255,255,0.15);cursor:pointer;background:rgba(255,255,255,0.05);color:#aaa;">🏢 Commercial</button>
     </div>
     <div style="margin-bottom:14px;">
       <label style="display:block;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin-bottom:5px;">Your Name *</label>
@@ -1428,77 +1428,109 @@
   </div>
 </div>
 
+
+
+
 <script>
-
-function submitQuoteForm() {
-  var modal = document.getElementById('quoteModal');
-  var inner = modal.querySelector('div[style*="max-width:480px"]');
-  if (inner) {
-    inner.innerHTML = '<div style="text-align:center;padding:20px 0;">' +
-      '<div style="font-size:3rem;margin-bottom:16px;">✅</div>' +
-      '<h3 style="font-family:Barlow Condensed,sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:#ffffff;margin-bottom:12px;">Request Received!</h3>' +
-      '<p style="color:#aaa;font-size:0.95rem;line-height:1.7;margin-bottom:24px;">Thanks for reaching out. We'll be in touch within the hour.<br>For immediate help call <a href="tel:+18176680442" style="color:#F5A800;">(817) 668-0442</a></p>' +
-      '<button onclick="closeQuoteModal()" style="background:#F5A800;color:#1e1e1e;font-family:Barlow Condensed,sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;padding:14px 36px;border:none;border-radius:3px;cursor:pointer;">Close</button>' +
-      '</div>';
+(function() {
+  // ── Quote Modal ──
+  function openQuoteModal(type) {
+    var modal = document.getElementById('quoteModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setType(type || 'residential');
   }
-}
-
-function openQuoteModal(type) {
-  var m = document.getElementById('quoteModal');
-  m.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  setType(type || 'residential');
-}
-function closeQuoteModal() {
-  document.getElementById('quoteModal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-function setType(type) {
-  var btnR = document.getElementById('btnResidential');
-  var btnC = document.getElementById('btnCommercial');
-  var title = document.getElementById('modalTitle');
-  var badge = document.getElementById('modalBadge');
-  if (type === 'residential') {
-    title.textContent = 'Residential Service Quote';
-    badge.textContent = 'RESIDENTIAL';
-    btnR.style.background = '#F5A800'; btnR.style.color = '#1e1e1e';
-    btnC.style.background = 'rgba(255,255,255,0.05)'; btnC.style.color = '#aaa';
-  } else {
-    title.textContent = 'Commercial Service Quote';
-    badge.textContent = 'COMMERCIAL';
-    btnC.style.background = '#F5A800'; btnC.style.color = '#1e1e1e';
-    btnR.style.background = 'rgba(255,255,255,0.05)'; btnR.style.color = '#aaa';
+  function closeQuoteModal() {
+    var modal = document.getElementById('quoteModal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
   }
-}
-function setTypeResidential() { openQuoteModal('residential'); }
-function setTypeCommercial() { openQuoteModal('commercial'); }
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeQuoteModal();
-});
+  function setType(type) {
+    var title = document.getElementById('modalTitle');
+    var badge = document.getElementById('modalBadge');
+    var btnR = document.getElementById('btnResidential');
+    var btnC = document.getElementById('btnCommercial');
+    if (!title) return;
+    if (type === 'residential') {
+      title.textContent = 'Residential Service Quote';
+      badge.textContent = 'RESIDENTIAL';
+      if (btnR) { btnR.style.background='#F5A800'; btnR.style.color='#1e1e1e'; }
+      if (btnC) { btnC.style.background='rgba(255,255,255,0.05)'; btnC.style.color='#aaa'; }
+    } else {
+      title.textContent = 'Commercial Service Quote';
+      badge.textContent = 'COMMERCIAL';
+      if (btnC) { btnC.style.background='#F5A800'; btnC.style.color='#1e1e1e'; }
+      if (btnR) { btnR.style.background='rgba(255,255,255,0.05)'; btnR.style.color='#aaa'; }
+    }
+  }
+  function submitQuoteForm() {
+    var modal = document.getElementById('quoteModal');
+    if (!modal) return;
+    var inner = modal.querySelector('div[style*="max-width:480px"]');
+    if (inner) {
+      inner.innerHTML = '<div style="text-align:center;padding:20px 0;">' +
+        '<div style="font-size:3rem;margin-bottom:16px;">&#x2705;</div>' +
+        '<h3 style="font-family:Barlow Condensed,sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;color:#ffffff;margin-bottom:12px;">Request Received!</h3>' +
+        '<p style="color:#aaa;font-size:0.95rem;line-height:1.7;margin-bottom:24px;">Thanks for reaching out. We'll be in touch within the hour.<br>For immediate help call <a href="tel:+18176680442" style="color:#F5A800;">(817) 668-0442</a></p>' +
+        '<button data-action="close-quote" style="background:#F5A800;color:#1e1e1e;font-family:Barlow Condensed,sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;padding:14px 36px;border:none;border-radius:3px;cursor:pointer;">Close</button>' +
+        '</div>';
+      // re-bind close button
+      var closeBtn = inner.querySelector('[data-action="close-quote"]');
+      if (closeBtn) closeBtn.addEventListener('click', closeQuoteModal);
+    }
+  }
 
-// ADA: Trap focus inside modal when open
-function trapFocus(modal) {
-  var focusable = modal.querySelectorAll('button, input, select, textarea, a[href]');
-  var first = focusable[0];
-  var last = focusable[focusable.length - 1];
-  modal.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') {
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
+  // ── Service Area Map ──
+  function openServiceAreaMap() {
+    var modal = document.getElementById('serviceAreaModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(drawServiceMap, 80);
+  }
+  function closeServiceAreaMap() {
+    var modal = document.getElementById('serviceAreaModal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // ── Event delegation - handles all buttons ──
+  document.addEventListener('click', function(e) {
+    var el = e.target.closest('[data-modal], [data-action], [data-type]');
+    if (!el) return;
+
+    var modal = el.getAttribute('data-modal');
+    var action = el.getAttribute('data-action');
+    var type = el.getAttribute('data-type');
+
+    if (modal) { e.preventDefault(); openQuoteModal(modal); }
+    if (type) { e.preventDefault(); setType(type); }
+    if (action === 'close-quote') { e.preventDefault(); closeQuoteModal(); }
+    if (action === 'close-map') { e.preventDefault(); closeServiceAreaMap(); }
+    if (action === 'submit-quote') { e.preventDefault(); submitQuoteForm(); }
+    if (action === 'open-map') { e.preventDefault(); openServiceAreaMap(); }
+  });
+
+  // ── Keyboard: Escape closes modals ──
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeQuoteModal();
+      closeServiceAreaMap();
     }
   });
-}
-// Init focus traps
-document.addEventListener('DOMContentLoaded', function() {
-  var qm = document.getElementById('quoteModal');
-  var sm = document.getElementById('serviceAreaModal');
-  if (qm) trapFocus(qm);
-  if (sm) trapFocus(sm);
-});
 
+  // ── Overlay clicks ──
+  document.addEventListener('click', function(e) {
+    var qm = document.getElementById('quoteModal');
+    var sm = document.getElementById('serviceAreaModal');
+    if (qm && e.target === qm) closeQuoteModal();
+    if (sm && e.target === sm) closeServiceAreaMap();
+  });
+
+})();
 </script>
 
 </body>
